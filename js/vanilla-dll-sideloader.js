@@ -261,13 +261,38 @@ function isPE() {
 
 
 
-module.exports.run = function (win, nw) {
-    let peName = win.localStorage.gamePath;
-    let dirName = path.dirname(peName);
+module.exports.run = function (win) {
+    let dirName = path.dirname(win.localStorage.gamePath);
+
+    let peName;
+    let gameDir = fs.readdirSync(dirName);
+    gameDir.forEach(function (file, index) {
+        if (file.toLowerCase() === "WoW_tweaked.exe".toLowerCase()) {
+            peName = file;
+        }
+    });
+
+    if (peName === undefined) {
+        gameDir.forEach(function (file, index) {
+            if (file.toLowerCase() === "WoWFoV.exe".toLowerCase()) {
+                peName = file;
+            }
+        });
+    }
+
+    if (peName === undefined) {
+        gameDir.forEach(function (file, index) {
+            if (file.toLowerCase() === "WoW.exe".toLowerCase()) {
+                peName = file;
+            }
+        });
+    }
 
     if (peName === undefined || peName.length == 0) {
-        throw new Error("Need a PE(.exe) name.");
+        throw new Error("Couldn't find WoW.exe in game path.");
     }
+
+    peName = path.join(dirName, peName);
 
     exe = fs.readFileSync(peName);
     if (!isPE()) {

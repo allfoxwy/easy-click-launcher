@@ -27,7 +27,7 @@ function launch() {
 $(function () {
     nw.Window.get().setPosition("center");
 
-    const expectedVersion = 5;
+    const expectedVersion = 7;
 
     if (localStorage.dataVersion != expectedVersion) {
         localStorage.clear();
@@ -37,6 +37,7 @@ $(function () {
         localStorage.enableUnitXPsp3 = "yes";
         localStorage.enableQPC = "yes";
         localStorage.enableM2Faster = "yes";
+        localStorage.enableClearWDB = "yes";
     }
 
     if (localStorage.gamePath.length > 0) {
@@ -99,6 +100,20 @@ $(function () {
             localStorage.enableM2Faster = "yes";
         } else {
             localStorage.enableM2Faster = "no";
+        }
+    });
+
+    if (localStorage.enableClearWDB === "yes") {
+        $("#enable-clearWDB").prop("checked", true);
+    } else {
+        $("#enable-clearWDB").prop("checked", false);
+    }
+
+    $("#enable-clearWDB").on("change", function () {
+        if ($("#enable-clearWDB").prop("checked") === true) {
+            localStorage.enableClearWDB = "yes";
+        } else {
+            localStorage.enableClearWDB = "no";
         }
     });
 

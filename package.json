@@ -9,5 +9,7 @@
         "min_width": 640,
         "min_height": 480
     },
-    "plugin": false
+    "webkit": {
+        "plugin": false
+    }
 }

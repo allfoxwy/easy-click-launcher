@@ -9,6 +9,9 @@ module.exports.run = function(win) {
 
     if(win.localStorage.enableM2Faster === "yes") {
         config.ensureConfig(win, "M2Faster", "3");
+        config.ensureConfig(win, "M2UseShaders", "1");
+        config.ensureConfig(win, "M2UsePixelShaders", "1");
+        
     }
 
     if(win.localStorage.enableClearWDB === "yes") {

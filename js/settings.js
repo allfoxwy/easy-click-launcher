@@ -2,7 +2,7 @@ const path = require("path");
 
 function launch() {
     let runPath;
-    if(path.extname(localStorage.gamePath).toLowerCase() === ".exe") {
+    if (path.extname(localStorage.gamePath).toLowerCase() === ".exe") {
         runPath = path.join(path.dirname(localStorage.gamePath), "WoW_sideload-DLL.exe");
     } else {
         runPath = localStorage.gamePath;
@@ -22,12 +22,35 @@ function launch() {
     p.unref();
 }
 
+function setHardwareCursorSize(size) {
+    size = parseInt(size);
+
+    if (size === 2) {
+        $(".label-cursor-size").text("2X sized Cursor");
+        localStorage.hardwareCursorSize = size.toString();
+        return;
+    }
+    if (size === 3) {
+        $(".label-cursor-size").text("3X sized Cursor");
+        localStorage.hardwareCursorSize = size.toString();
+        return;
+    }
+    if (size === 4) {
+        $(".label-cursor-size").text("4X sized Cursor");
+        localStorage.hardwareCursorSize = size.toString();
+        return;
+    }
+
+    $(".label-cursor-size").text("Original Cursor");
+    localStorage.hardwareCursorSize = "1";
+    return;
+}
 
 // Main entrance
 $(function () {
     nw.Window.get().setPosition("center");
 
-    const expectedVersion = 7;
+    const expectedVersion = 11;
 
     if (localStorage.dataVersion != expectedVersion) {
         localStorage.clear();
@@ -38,6 +61,8 @@ $(function () {
         localStorage.enableQPC = "yes";
         localStorage.enableM2Faster = "yes";
         localStorage.enableClearWDB = "yes";
+        localStorage.enableDXVK = "yes";
+        localStorage.hardwareCursorSize = "1";
     }
 
     if (localStorage.gamePath.length > 0) {
@@ -55,11 +80,31 @@ $(function () {
             localStorage.gamePath = $(".game-path").val();
             $(".button-game-path").text(localStorage.gamePath);
 
-            if(path.extname(localStorage.gamePath).toLowerCase() !== ".exe") {
+            if (path.extname(localStorage.gamePath).toLowerCase() !== ".exe") {
                 alert("You are selecting a non-PE file for game path. While you surely could make a batch/script for starting the game, please use WoW_sideload-DLL.exe in your batch/script so that mod loader would work.");
             }
         }
     });
+
+    if (localStorage.enableDXVK === "yes") {
+        $("#enable-DXVK").prop("checked", true);
+        $(".label-cursor-size").prop("disabled", false);
+    } else {
+        $("#enable-DXVK").prop("checked", false);
+        $(".label-cursor-size").prop("disabled", true);
+    }
+
+    $("#enable-DXVK").on("change", function () {
+        if ($("#enable-DXVK").prop("checked") === true) {
+            localStorage.enableDXVK = "yes";
+            $(".label-cursor-size").prop("disabled", false);
+        } else {
+            localStorage.enableDXVK = "no";
+            $(".label-cursor-size").prop("disabled", true);
+        }
+    });
+
+    setHardwareCursorSize(localStorage.hardwareCursorSize);
 
     if (localStorage.enableUnitXPsp3 === "yes") {
         $("#enable-UnitXP-SP3").prop("checked", true);
@@ -122,27 +167,31 @@ $(function () {
             $(".root").css("display", "none");
             $(".starting-message").css("display", "block");
 
-            let steps = [
-                "js/vanilla-dll-sideloader.js",
-                "js/UnitXP_SP3.js",
-                "js/myConfigTweaks.js",
-            ];
+            setTimeout(() => {
+                let steps = [
+                    "js/vanilla-dll-sideloader.js",
+                    "js/DXVK.js",
+                    "js/UnitXP_SP3.js",
+                    "js/myConfigTweaks.js",
+                ];
 
-            try {
-                for (let i = 0; i < steps.length; ++i) {
-                    let m = require(steps[i]);
-                    if (m.run !== undefined) {
-                        m.run(window);
+                try {
+                    for (let i = 0; i < steps.length; ++i) {
+                        let m = require(steps[i]);
+                        if (m.run !== undefined) {
+                            m.run(window);
+                        }
                     }
+                } catch (err) {
+                    alert(err);
+                    $(".root").css("display", "block");
+                    $(".starting-message").css("display", "none");
+                    return;
                 }
-            } catch (err) {
-                alert(err);
-                $(".root").css("display", "block");
-                $(".starting-message").css("display", "none");
-                return;
-            }
 
-            //launch();
+                launch();
+            }, 0);
+
         } else {
             alert("Please decide where the game is by clicking the button next to Game Path.")
         }

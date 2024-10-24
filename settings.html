@@ -14,10 +14,10 @@
     <input type="file" class="game-path" style="display: none;" />
 
     <br>
-    <div class="container root" style="background-color: antiquewhite;border-radius: 0.5rem;border: 1px solid silver;">
+    <div class="container root" style="background-color:antiquewhite;border-radius: 0.5rem;border: 1px solid silver;">
         <br>
         <div>
-            Game Path: <button class="btn btn-outline-primary button-game-path">Not Yet Decided</button>
+            WoW.exe Game Path: <button class="btn btn-outline-primary button-game-path">Not Yet Decided</button>
         </div>
         <br><br>
         <div class="row">
@@ -31,6 +31,51 @@
 
         <div>
             <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="enable-DXVK">
+                <label class="form-check-label" for="enable-DXVK">
+                    <span style="font-weight: bold;">
+                        <span class="badge rounded-pill text-bg-warning">3rd-party Mod</span>
+                        Vulkan-based implementation of Direct3D 9
+                    </span>
+                    <br>
+                    <p>
+                        <a href="javascript:nw.Shell.openExternal('https://github.com/doitsujin/dxvk/')">DXVK from doitsujin</a> would
+                        translate Direct3D 9 into Vulkan so that the game could take advantage of modern graphic
+                        hardware. It requires at least <a
+                            href="javascript:nw.Shell.openExternal('https://en.wikipedia.org/wiki/Maxwell_(microarchitecture)')">NVIDIA
+                            Maxwell</a> or <a
+                            href="javascript:nw.Shell.openExternal('https://en.wikipedia.org/wiki/Radeon_400_series')">AMD
+                            Polaris</a> to operate.
+                    </p>
+                    <p>
+                    <ul>
+                        <li>Improve GPU efficiency.</li>
+                    </ul>
+                    </p>
+                    <p>
+                        Also <a href="javascript:nw.Shell.openExternal('https://github.com/allfoxwy/dxvk')">this
+                            included DXVK version</a> has additional capabilities to enlarge mouse cursor on high DPI
+                        display:
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle label-cursor-size" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Original Cursor
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="javascript:setHardwareCursorSize(1)">Original Cursor (32 x 32)</a></li>
+                            <li><a class="dropdown-item" href="javascript:setHardwareCursorSize(2)">2X sized Cursor (64 x 64)</a></li>
+                            <li><a class="dropdown-item" href="javascript:setHardwareCursorSize(3)">3X sized Cursor (96 x 96)</a></li>
+                            <li><a class="dropdown-item" href="javascript:setHardwareCursorSize(4)">4X sized Cursor (128 x 128)</a></li>
+                        </ul>
+
+                    </div>
+                    </p>
+                </label>
+            </div>
+        </div>
+        <br><br>
+        <div>
+            <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="enable-UnitXP-SP3">
                 <label class="form-check-label" for="enable-UnitXP-SP3">
                     <span style="font-weight: bold;">
@@ -42,7 +87,14 @@
                     <p>
                         These functions are provided by <a
                             href="javascript:nw.Shell.openExternal('https://github.com/allfoxwy/UnitXP_SP3')">UnitXP
-                            Service Pack 3</a>
+                            Service Pack 3 from allfoxwy</a>:
+                    <ul>
+                        <li>Nameplates also check line of sight in addition to distance. So that mobs behind wall/on
+                            another floor would have no nameplates.</li>
+                        <li>Better Key Binding functions to replace default TAB key.</li>
+                        <li>Blink taskbar/Play system sound when game is in background but require player attention.
+                        </li>
+                    </ul>
                     </p>
 
                 </label>
@@ -64,7 +116,9 @@
                             is strongly discourage using RDTSC.</a>
                     </p>
                     <p>
-                        Might smooth animations.
+                    <ul>
+                        <li>Might smooth animations when frames per second is higher than 60.</li>
+                    </ul>
                     </p>
                 </label>
             </div>
@@ -76,14 +130,25 @@
                 <label class="form-check-label" for="enable-M2Faster">
                     <span style="font-weight: bold;">
                         <span class="badge rounded-pill text-bg-info">In-game Option</span> Use more CPU cores for
-                        Vertex Animation Shaders
+                        shaders processing
                     </span>
                     <br>
                     <p>
-                        4 cores would be used instead of default 2.
+                        Enable Vertex/Pixel Shaders and use 4 CPU cores instead of default 2.
                     </p>
                     <p>
-                        Improve performance in crowded scenes.
+                    <ul>
+                        <li>
+                            Improve performance in crowded scenes.
+                        </li>
+                        <li>
+                            Vertex Shaders are required to render graphics properly.
+                        </li>
+                        <li>
+                            Pixel Shaders are for rendering light. Not sure its side effect but some forum threads
+                            suggest using it. And offloading lighting processing onto GPU sounds right to me.
+                        </li>
+                    </ul>
                     </p>
                 </label>
             </div>
@@ -102,7 +167,11 @@
                         Clear WDB folder to correctly see creatures, items, and quest-related changes.
                     </p>
                     <p>
-                        Often fix minor game glitches.
+                    <ul>
+                        <li>
+                            Often fix minor game glitches.
+                        </li>
+                    </ul>
                     </p>
                 </label>
             </div>

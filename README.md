@@ -1,3 +1,3 @@
 # easy-click-launcher
 
-Not yet ready for public consume.
+Not yet ready for public consumption.

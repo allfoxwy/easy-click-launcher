@@ -266,11 +266,18 @@ module.exports.run = function (win) {
 
     let peName;
     let gameDir = fs.readdirSync(dirName);
-    gameDir.forEach(function (file, index) {
-        if (file.toLowerCase() === "WoW_tweaked.exe".toLowerCase()) {
-            peName = file;
-        }
-    });
+
+    if(path.extname(win.localStorage.gamePath).toLowerCase() === ".exe") {
+        peName = path.basename(win.localStorage.gamePath);
+    }
+
+    if (peName === undefined) {
+        gameDir.forEach(function (file, index) {
+            if (file.toLowerCase() === "WoW_tweaked.exe".toLowerCase()) {
+                peName = file;
+            }
+        });
+    }
 
     if (peName === undefined) {
         gameDir.forEach(function (file, index) {

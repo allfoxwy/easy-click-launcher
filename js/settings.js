@@ -1,6 +1,14 @@
+const path = require("path");
 
 function launch() {
-    let p = require("child_process").exec(localStorage.gamePath, function (err, stdout, stderr) {
+    let runPath;
+    if(path.extname(localStorage.gamePath).toLowerCase() === ".exe") {
+        runPath = path.join(path.dirname(localStorage.gamePath), "WoW_sideload-DLL.exe");
+    } else {
+        runPath = localStorage.gamePath;
+    }
+
+    let p = require("child_process").exec(runPath, function (err, stdout, stderr) {
         if (err) {
             alert(err);
             return;
@@ -17,6 +25,8 @@ function launch() {
 
 // Main entrance
 $(function () {
+    nw.Window.get().setPosition("center");
+
     const expectedVersion = 5;
 
     if (localStorage.dataVersion != expectedVersion) {
@@ -43,6 +53,10 @@ $(function () {
         if (this.files.length == 1) {
             localStorage.gamePath = $(".game-path").val();
             $(".button-game-path").text(localStorage.gamePath);
+
+            if(path.extname(localStorage.gamePath).toLowerCase() !== ".exe") {
+                alert("You are selecting a non-PE file for game path. While you surely could make a batch/script for starting the game, please use WoW_sideload-DLL.exe in your batch/script so that mod loader would work.");
+            }
         }
     });
 

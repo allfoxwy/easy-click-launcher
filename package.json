@@ -1,4 +1,13 @@
 {
     "name": "easy-click-launcher",
-    "main": "settings.html"
+    "main": "settings.html",
+    "window": {
+        "title": "Easy Click Launcher",
+        "width": 1024,
+        "height": 600,
+        "position": "center",
+        "min_width": 640,
+        "min_height": 480
+    },
+    "plugin": false
 }

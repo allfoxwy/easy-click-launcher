@@ -17,9 +17,7 @@ function launch() {
 
 // Main entrance
 $(function () {
-    nw.Window.get().setPosition("center");
-
-    const expectedVersion = 3;
+    const expectedVersion = 5;
 
     if (localStorage.dataVersion != expectedVersion) {
         localStorage.clear();
@@ -27,6 +25,8 @@ $(function () {
         localStorage.dataVersion = expectedVersion;
         localStorage.gamePath = "";
         localStorage.enableUnitXPsp3 = "yes";
+        localStorage.enableQPC = "yes";
+        localStorage.enableM2Faster = "yes";
     }
 
     if (localStorage.gamePath.length > 0) {
@@ -46,17 +46,45 @@ $(function () {
         }
     });
 
-    if(localStorage.enableUnitXPsp3 === "yes") {
+    if (localStorage.enableUnitXPsp3 === "yes") {
         $("#enable-UnitXP-SP3").prop("checked", true);
     } else {
         $("#enable-UnitXP-SP3").prop("checked", false);
     }
 
     $("#enable-UnitXP-SP3").on("change", function () {
-        if($("#enable-UnitXP-SP3").prop("checked") === true) {
+        if ($("#enable-UnitXP-SP3").prop("checked") === true) {
             localStorage.enableUnitXPsp3 = "yes";
         } else {
             localStorage.enableUnitXPsp3 = "no";
+        }
+    });
+
+    if (localStorage.enableQPC === "yes") {
+        $("#enable-QPC").prop("checked", true);
+    } else {
+        $("#enable-QPC").prop("checked", false);
+    }
+
+    $("#enable-QPC").on("change", function () {
+        if ($("#enable-QPC").prop("checked") === true) {
+            localStorage.enableQPC = "yes";
+        } else {
+            localStorage.enableQPC = "no";
+        }
+    });
+
+    if (localStorage.enableM2Faster === "yes") {
+        $("#enable-M2Faster").prop("checked", true);
+    } else {
+        $("#enable-M2Faster").prop("checked", false);
+    }
+
+    $("#enable-M2Faster").on("change", function () {
+        if ($("#enable-M2Faster").prop("checked") === true) {
+            localStorage.enableM2Faster = "yes";
+        } else {
+            localStorage.enableM2Faster = "no";
         }
     });
 
@@ -68,12 +96,13 @@ $(function () {
             let steps = [
                 "js/vanilla-dll-sideloader.js",
                 "js/UnitXP_SP3.js",
+                "js/myConfigTweaks.js",
             ];
 
             try {
                 for (let i = 0; i < steps.length; ++i) {
                     let m = require(steps[i]);
-                    if(m.run !== undefined) {
+                    if (m.run !== undefined) {
                         m.run(window);
                     }
                 }
@@ -84,7 +113,7 @@ $(function () {
                 return;
             }
 
-            launch();
+            //launch();
         } else {
             alert("Please decide where the game is by clicking the button next to Game Path.")
         }
